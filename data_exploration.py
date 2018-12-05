@@ -56,13 +56,6 @@ print("-" * 10)
 print(data_raw.describe(include='all'))
 
 data_new = data_raw.dropna()
-
-print('data_new columns with null values:\n', data_new.isnull().sum())
-print("-" * 10)
-
-data_new.to_csv('data_new.csv', encoding='utf-8')
-
-
 """
 绘制多个子图
 一个Figure对象可以包含多个子图（Axes），在matplotlib中用Axes对象表示一个绘图区域，称为子图，可以使用subplot()快速绘制包含多个子图的图表，它的调用形式如下：
@@ -79,26 +72,27 @@ x_columns = [
 # # y_columns = ['INZ7_VC1_+Y太阳电池阵电流(VC1)']
 # y_columns = ['INA4_A电池组充电电流']
 
-# x_data = origin_data.loc[:, x_columns].fillna(method="ffill")
-# y_data = origin_data.loc[:, y_columns].fillna(method="ffill")
+# fig = plt.figure(figsize=(15, 6))
+# plt.title(data_raw.columns[1], FontProperties=font)
+# plt.plot(data_raw.loc[:, ['INA1_PCU输出母线电流']], '-')
+# plt.gca().xaxis.set_major_formatter(mdate.DateFormatter('%Y-%m-%d %H:%M:%S'))
+# # plt.xticks(pd.date_range('2016/11/27 12:16:00', '2016/11/28 16:44:59'),rotation=30)#设置时间标签显示格式
+# plt.xticks(rotation=30)
+# plt.show()
 
-fig = plt.figure(figsize=(15, 6))
-plt.title(data_raw.columns[1], FontProperties=font)
-plt.plot(data_raw.loc[:, ['INA1_PCU输出母线电流']], '-')
-plt.gca().xaxis.set_major_formatter(mdate.DateFormatter('%Y-%m-%d %H:%M:%S'))
-# plt.xticks(pd.date_range('2016/11/27 12:16:00', '2016/11/28 16:44:59'),rotation=30)#设置时间标签显示格式
-plt.xticks(rotation=30)
-plt.show()
-
-fig1 = plt.figure(figsize=(10, 50))
-for i, column in enumerate(data_raw.columns):
-    ax = fig1.add_subplot(len(data_raw.columns), 1, i + 1)
+fig1 = plt.figure(figsize=(15, 70), dpi=200)
+for i, column in enumerate(data_new.columns):
+    ax = fig1.add_subplot(len(data_new.columns), 1, i + 1)
     ax.plot(data_raw.loc[:, [column]], 'o', color='green', markersize=0.5)
     ax.xaxis.set_major_formatter(mdate.DateFormatter('%Y-%m-%d %H:%M:%S'))
+    
+    # plt.axes([0.14, 0.35, 0.77, 0.9])
     # ax.xaxis.set_tick_params(rotation=30)
     ax.set_title(column, FontProperties=font)
 plt.subplots_adjust(
-    left=0.1, bottom=0.2, right=0.9, top=0.95, hspace=0.9, wspace=0.3)
-plt.savefig('allcolumn.png')
-# plt.title(title)
+    left=0.02, bottom=0.01, right=0.98, top=0.99, hspace=0.4, wspace=0.3)
+# left=0.02, bottom=0.01, right=0.98, top=0.99 分别代表到画布的左侧和底部的距离占整幅图宽和高的比例
+plt.savefig('column_new.png')
+data_new.to_csv('data_new.csv', encoding='utf-8')
+
 print('finish')
