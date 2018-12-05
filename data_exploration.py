@@ -46,7 +46,7 @@ font_size = 5
 # 列名字有中文的时候，encoding='utf-8',不然会出错
 # index_col设置属性列，parse_dates设置是否解析拥有时间值的列
 data_raw = pd.read_csv(
-    'data.csv', sep=',', index_col=0, encoding='utf-8', parse_dates=True)
+    'data/data.csv', sep=',', index_col=0, encoding='utf-8', parse_dates=True)
 print(data_raw.info())
 # print(data_raw.sample(10))
 
@@ -92,7 +92,7 @@ for i, column in enumerate(data_new.columns):
 plt.subplots_adjust(
     left=0.02, bottom=0.01, right=0.98, top=0.99, hspace=0.4, wspace=0.3)
 # left=0.02, bottom=0.01, right=0.98, top=0.99 分别代表到画布的左侧和底部的距离占整幅图宽和高的比例
-plt.savefig('column_new.png')
+plt.savefig('result/column_new.png')
 data_new.to_csv('data_new.csv', encoding='utf-8')
 
 print('finish')
