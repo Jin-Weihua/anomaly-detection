@@ -14,6 +14,7 @@ from keras.layers import Conv1D, GlobalMaxPool1D, Dense, Flatten, LSTM, Bidirect
 from keras.models import Sequential
 from keras.callbacks import ModelCheckpoint
 import numpy as np
+import pandas as pd
 
 
 class LstmAutoEncoder(object):
@@ -103,17 +104,20 @@ class LstmAutoEncoder(object):
         config_file_path = LstmAutoEncoder.get_config_file(model_dir_path=model_dir_path)
         np.save(config_file_path, self.config)
 
-    def predict(self, timeseries_dataset):
+    def predict(self, timeseries_dataset, index, columns):
         input_timeseries_dataset = np.expand_dims(timeseries_dataset, axis=2)
         target_timeseries_dataset = self.model.predict(x=input_timeseries_dataset)
+        data_target = pd.DataFrame(target_timeseries_dataset, index=index, columns=columns)
+        data_target.to_csv('data/data_prd.csv', encoding='utf-8')
+        print(type(target_timeseries_dataset))
         dist = np.linalg.norm(timeseries_dataset - target_timeseries_dataset, axis=-1)
         return dist
 
-    def anomaly(self, timeseries_dataset, threshold=None):
+    def anomaly(self, timeseries_dataset, index, columns, threshold=None):
         if threshold is not None:
             self.threshold = threshold
 
-        dist = self.predict(timeseries_dataset)
+        dist = self.predict(timeseries_dataset, index, columns)
         return zip(dist >= self.threshold, dist)
 
 

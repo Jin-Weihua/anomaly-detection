@@ -36,6 +36,10 @@ def main():
     scaler = MinMaxScaler()
     satellite_np_data = scaler.fit_transform(satellite_np_data)
     print(satellite_np_data.shape)
+    index = satellite_data.index
+    columns = satellite_data.columns
+    # data_std = pd.DataFrame(satellite_np_data, index=index, columns=columns)
+    # data_std.to_csv('data/data_std_train.csv', encoding='utf-8')
 
     ae = LstmAutoEncoder()
 
@@ -48,7 +52,7 @@ def main():
 
     # load back the model saved in model_dir_path detect anomaly
     ae.load_model(model_dir_path)
-    anomaly_information = ae.anomaly(satellite_np_data[:96717, :])
+    anomaly_information = ae.anomaly(satellite_np_data[:96717, :], index, columns)
     reconstruction_error = []
     for idx, (is_anomaly, dist) in enumerate(anomaly_information):
         print('# ' + str(idx) + ' is ' +
