@@ -19,20 +19,31 @@ import pandas as pd
 
 dateparser = lambda x: pd.datetime.strptime(x, '%Y-%m-%d %H:%M:%S')
 data_raw = pd.read_csv(
-    'data/1208_new.csv',
+    'data/data_std_train.csv',
     sep=',',
     index_col=0,
     encoding='utf-8',
     parse_dates=True,
     date_parser=dateparser)
 
-data_plot = data_raw.iloc[96000:]
+data_prd = pd.read_csv(
+    'data/data_prd.csv',
+    sep=',',
+    index_col=0,
+    encoding='utf-8',
+    parse_dates=True,
+    date_parser=dateparser)
+
+# data_plot = data_raw.iloc[96000:]
 
 data = []
-for column in data_raw.columns:
-    data.append(
-        go.Scatter(
-            x=data_plot.index, y=data_plot[column], mode='markers', name=column))
+data.append(go.Scatter(x=data_raw.index, y=data_raw['INA1_PCU输出母线电流'], mode='markers', name='INA1_PCU输出母线电流'))
+data.append(go.Scatter(x=data_raw.index, y=data_prd['INA1_PCU输出母线电流'], mode='markers', name='INA1_PCU输出母线电流'))
+
+# for column in data_raw.columns:
+#     data.append(
+#         go.Scatter(
+#             x=data_plot.index, y=data_plot[column], mode='markers', name=column))
 
 
 plotly.offline.plot(data, filename='Satillite.html', auto_open=True)

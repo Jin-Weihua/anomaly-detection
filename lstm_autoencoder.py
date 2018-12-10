@@ -38,8 +38,8 @@ def main():
     print(satellite_np_data.shape)
     index = satellite_data.index
     columns = satellite_data.columns
-    # data_std = pd.DataFrame(satellite_np_data, index=index, columns=columns)
-    # data_std.to_csv('data/data_std_train.csv', encoding='utf-8')
+    data_std = pd.DataFrame(satellite_np_data, index=index, columns=columns)
+    data_std.to_csv('data/data_std_train.csv', encoding='utf-8')
 
     ae = LstmAutoEncoder()
 
