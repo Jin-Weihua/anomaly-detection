@@ -26,6 +26,18 @@ data_raw = pd.read_csv(
     parse_dates=True,
     date_parser=dateparser)
 
-data = [go.Scatter(x=data_raw.index, y=data_raw['VNC31蓄电池A电压'])]
+data = []
+for column in data_raw.columns:
+    data.append(
+        go.Scatter(
+            x=data_raw.index, y=data_raw[column], mode='markers', name=column))
 
-py.plot(data, filename='basic-line', auto_open=True)
+# data = [
+#     go.Scatter(
+#         x=data_raw.index,
+#         y=data_raw['VNC31蓄电池A电压'],
+#         mode='markers',
+#         name='VNC31蓄电池A电压')
+# ]
+
+plotly.offline.plot(data, filename='Satillite.html', auto_open=True)
