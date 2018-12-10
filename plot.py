@@ -37,8 +37,9 @@ data_prd = pd.read_csv(
 # data_plot = data_raw.iloc[96000:]
 
 data = []
-data.append(go.Scatter(x=data_raw.index, y=data_raw['INA1_PCU输出母线电流'], mode='markers', name='INA1_PCU输出母线电流'))
-data.append(go.Scatter(x=data_raw.index, y=data_prd['INA1_PCU输出母线电流'], mode='markers', name='INA1_PCU输出母线电流'))
+column = 'INZ1_PCU输出母线备份电流' 
+data.append(go.Scatter(x=data_raw.index, y=data_raw.iloc[0:100][column], mode='markers', name=column))
+data.append(go.Scatter(x=data_raw.index, y=data_prd.iloc[0:100][column], mode='markers', name=column))
 
 # for column in data_raw.columns:
 #     data.append(
@@ -46,4 +47,4 @@ data.append(go.Scatter(x=data_raw.index, y=data_prd['INA1_PCU输出母线电流'
 #             x=data_plot.index, y=data_plot[column], mode='markers', name=column))
 
 
-plotly.offline.plot(data, filename='Satillite.html', auto_open=True)
+plotly.offline.plot(data, filename='result/column.html', auto_open=True)

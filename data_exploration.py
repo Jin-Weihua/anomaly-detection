@@ -57,20 +57,15 @@ print(data_raw.info())
 # print(data_raw.sample(10))
 data_raw.drop([
     'TNT1-Y太阳电池内板温度1', 'TNT14锂离子蓄电池组A温度1', 'TNT15锂离子蓄电池组A温度2',
-    'TNT4-Y太阳电池内板温度4'],axis=1,inplace=True)
+    'TNT4-Y太阳电池内板温度4','INZ1_PCU输出母线备份电流','INZ1_VC1_PCU输出母线备份电流(VC1)','INZ6_VC1_-Y太阳电池阵电流（VC1）','INZ7_VC1_+Y太阳电池阵电流(VC1)','VNA2_VC1_A蓄电池整组电压(VC1)','VNA3_VC1_B蓄电池整组电压(VC1)','VNZ2_VC1MEA电压(S3R)(VC1)','VNZ3_VC1MEA电压(BCDR)(VC1)',''],axis=1,inplace=True)
 print('Train columns with null values:\n', data_raw.isnull().sum())
 print("-" * 10)
 
 print(data_raw.describe(include='all'))
 
 data_new = data_raw.dropna()
-data_new.to_csv('data/1208_new.csv', encoding='utf-8')
-"""
-绘制多个子图
-一个Figure对象可以包含多个子图（Axes），在matplotlib中用Axes对象表示一个绘图区域，称为子图，可以使用subplot()快速绘制包含多个子图的图表，它的调用形式如下：
-subplot(numRows,numCols,plotNum)
-图表的整个绘图区域被等分为numRows行和numCols列，然后按照从左到下的顺序对每个区域进行编号，左上区域的编号为1。plotNum参数指定创建的Axes对象所在的区域
-"""
+data_new.to_csv('data/data_std.csv', encoding='utf-8')
+
 x_columns = [
     'INA1_PCU输出母线电流', 'INA4_A电池组充电电流', 'INA2_A电池组放电电流', 'INZ6_-Y太阳电池阵电流',
     'INZ7_+Y太阳电池阵电流', 'VNC31蓄电池A电压', 'VNZ3MEA电压(BCDR)', 'VNZ4A组蓄电池BEA信号',
