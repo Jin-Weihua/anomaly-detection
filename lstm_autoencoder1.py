@@ -18,7 +18,7 @@ from sklearn.preprocessing import MinMaxScaler
 from library.plot_utils import visualize_reconstruction_error
 from library.auto_encoder import LstmAutoEncoder1
 
-DO_TRAINING = True
+DO_TRAINING = False
 
 
 def main():
@@ -54,7 +54,7 @@ def main():
 
     # load back the model saved in model_dir_path detect anomaly
     ae.load_model(model_dir_path)
-    anomaly_information = ae.anomaly(satellite_np_data[:96717, :], index, columns)
+    anomaly_information = ae.anomaly(satellite_np_data[:96717, :])
     reconstruction_error = []
     for idx, (is_anomaly, dist) in enumerate(anomaly_information):
         print('# ' + str(idx) + ' is ' +
