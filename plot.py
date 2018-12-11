@@ -37,7 +37,7 @@ data_prd = pd.read_csv(
 # data_plot = data_raw.iloc[96000:]
 
 data = []
-column = 'INZ10_ABCR3输出电流' 
+column = 'VNC9蓄电池A单体9电压' 
 data.append(go.Scatter(x=data_raw.index, y=data_raw.iloc[0:200][column], mode='markers', name=column))
 data.append(go.Scatter(x=data_raw.index, y=data_prd.iloc[0:200][column], mode='markers', name=column))
 
