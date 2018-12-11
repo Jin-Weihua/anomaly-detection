@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 '''
-@File    :   lstm_autoencoder.py
-@Time    :   2018/12/06 14:27:42
+@File    :   lstm_autoencoder1.py
+@Time    :   2018/12/10 19:22:10
 @Author  :   靳卫华 
 @Version :   1.0
 @Contact :   wh.jin@hotmail.com
@@ -11,11 +11,12 @@
 
 # here put the import lib
 
+
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 
 from library.plot_utils import visualize_reconstruction_error
-from library.auto_encoder import LstmAutoEncoder
+from library.auto_encoder import LstmAutoEncoder1
 
 DO_TRAINING = False
 
@@ -25,7 +26,7 @@ def main():
     model_dir_path = 'model'
     dateparser = lambda x: pd.datetime.strptime(x, '%Y-%m-%d %H:%M:%S')
     satellite_data = pd.read_csv(
-        data_dir_path + '/1208_new.csv',
+        data_dir_path + '/data_std.csv',
         sep=',',
         index_col=0,
         encoding='utf-8',
@@ -38,10 +39,10 @@ def main():
     print(satellite_np_data.shape)
     index = satellite_data.index
     columns = satellite_data.columns
-    data_std = pd.DataFrame(satellite_np_data, index=index, columns=columns)
-    data_std.to_csv('data/data_std_train.csv', encoding='utf-8')
+    # data_std = pd.DataFrame(satellite_np_data, index=index, columns=columns)
+    # data_std.to_csv('data/data_scaler.csv', encoding='utf-8')
 
-    ae = LstmAutoEncoder(index, columns)
+    ae = LstmAutoEncoder1(index, columns)
 
     # fit the data and save model into model_dir_path
     if DO_TRAINING:

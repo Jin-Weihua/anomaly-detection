@@ -57,13 +57,14 @@ print(data_raw.info())
 # print(data_raw.sample(10))
 data_raw.drop([
     'TNT1-Y太阳电池内板温度1', 'TNT14锂离子蓄电池组A温度1', 'TNT15锂离子蓄电池组A温度2',
-    'TNT4-Y太阳电池内板温度4','INZ1_PCU输出母线备份电流','INZ1_VC1_PCU输出母线备份电流(VC1)','INZ6_VC1_-Y太阳电池阵电流（VC1）','INZ7_VC1_+Y太阳电池阵电流(VC1)','VNA2_VC1_A蓄电池整组电压(VC1)','VNA3_VC1_B蓄电池整组电压(VC1)','VNZ2_VC1MEA电压(S3R)(VC1)','VNZ3_VC1MEA电压(BCDR)(VC1)',''],axis=1,inplace=True)
+    'TNT4-Y太阳电池内板温度4','INZ1_PCU输出母线备份电流','INZ1_VC1_PCU输出母线备份电流(VC1)','INZ6_VC1_-Y太阳电池阵电流（VC1）','INZ7_VC1_+Y太阳电池阵电流(VC1)','VNA2_VC1_A蓄电池整组电压(VC1)','VNA3_VC1_B蓄电池整组电压(VC1)','VNZ2_VC1MEA电压(S3R)(VC1)','VNZ3_VC1MEA电压(BCDR)(VC1)'],axis=1,inplace=True)
 print('Train columns with null values:\n', data_raw.isnull().sum())
 print("-" * 10)
 
 print(data_raw.describe(include='all'))
 
 data_new = data_raw.dropna()
+print(data_new.info())
 data_new.to_csv('data/data_std.csv', encoding='utf-8')
 
 x_columns = [
