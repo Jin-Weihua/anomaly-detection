@@ -200,7 +200,7 @@ class LstmAutoEncoder1(object):
                        callbacks=[checkpoint])
         self.model.save_weights(weight_file_path)
 
-        scores = self.predict(timeseries_dataset, self.index, self.columns)
+        scores = self.predict(timeseries_dataset)
         scores.sort()
         cut_point = int(estimated_negative_sample_ratio * len(scores))
         self.threshold = scores[cut_point]

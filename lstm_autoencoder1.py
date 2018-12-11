@@ -18,7 +18,7 @@ from sklearn.preprocessing import MinMaxScaler
 from library.plot_utils import visualize_reconstruction_error
 from library.auto_encoder import LstmAutoEncoder1
 
-DO_TRAINING = False
+DO_TRAINING = True
 
 
 def main():
@@ -32,6 +32,7 @@ def main():
         encoding='utf-8',
         parse_dates=True,
         date_parser=dateparser)
+    #satellite_data = satellite_data1.iloc[0:100]
     print(satellite_data.head())
     satellite_np_data = satellite_data.as_matrix()
     scaler = MinMaxScaler()
