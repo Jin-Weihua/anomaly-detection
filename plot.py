@@ -27,7 +27,7 @@ data_raw = pd.read_csv(
     date_parser=dateparser)
 
 data_prd = pd.read_csv(
-    'data/LstmAutoEncoder1_prd.csv',
+    'data/LstmAutoEncoder2_prd.csv',
     sep=',',
     index_col=0,
     encoding='utf-8',
@@ -37,7 +37,7 @@ data_prd = pd.read_csv(
 # data_plot = data_raw.iloc[96000:]
 
 data = []
-column = 'VNC9蓄电池A单体9电压' 
+column = 'INA1_PCU输出母线电流' 
 data.append(go.Scatter(x=data_raw.index, y=data_raw.iloc[0:200][column], mode='markers', name=column))
 data.append(go.Scatter(x=data_raw.index, y=data_prd.iloc[0:200][column], mode='markers', name=column))
 
