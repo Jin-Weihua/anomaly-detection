@@ -44,14 +44,14 @@ font_size = 5
 
 dateparser = lambda x: pd.datetime.strptime(x, '%Y-%m-%d %H:%M:%S')
 data_raw = pd.read_csv(
-    'data/1208_new.csv',
+    'data/data_std.csv',
     sep=',',
     index_col=0,
     encoding='utf-8',
     parse_dates=True,
     date_parser=dateparser)
-print(data_raw.info())
-
+print(data_raw.describe())
+des=data_raw.describe()
 fig1 = plt.figure(figsize=(15, 70), dpi=200)
 for i, column in enumerate(data_raw.columns):
     ax = fig1.add_subplot(len(data_raw.columns), 1, i + 1)

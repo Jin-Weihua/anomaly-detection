@@ -37,9 +37,9 @@ data_prd = pd.read_csv(
 # data_plot = data_raw.iloc[96000:]
 
 data = []
-column = 'VNC9蓄电池A单体9电压' 
-data.append(go.Scatter(x=data_raw.index, y=data_raw.iloc[0:200][column], mode='markers', name=column))
-data.append(go.Scatter(x=data_raw.index, y=data_prd.iloc[0:200][column], mode='markers', name=column))
+column = 'INA4_A电池组充电电流' 
+data.append(go.Scatter(x=data_raw.index, y=data_raw.iloc[20000:25000][column], mode='markers', name=column))
+data.append(go.Scatter(x=data_raw.index, y=data_prd.iloc[20000:25000][column], mode='markers', name=column))
 
 # for column in data_raw.columns:
 #     data.append(
