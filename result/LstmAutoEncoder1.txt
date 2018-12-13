@@ -1,0 +1,40 @@
+-> (device: 0, name: GeForce GTX 1080 Ti, pci bus id: 0000:01:00.0)
+77373/77373 [==============================] - 919s - loss: 0.0068 - mean_absolute_error: 0.0317 - val_loss: 9.1727e-04 - val_mean_absolute_error: 0.0138
+Epoch 2/20
+77373/77373 [==============================] - 919s - loss: 7.2633e-04 - mean_absolute_error: 0.0114 - val_loss: 2.8617e-04 - val_mean_absolute_error: 0.0089
+Epoch 3/20
+77373/77373 [==============================] - 920s - loss: 3.3960e-04 - mean_absolute_error: 0.0086 - val_loss: 2.8973e-04 - val_mean_absolute_error: 0.0095
+Epoch 4/20
+77373/77373 [==============================] - 898s - loss: 2.0037e-04 - mean_absolute_error: 0.0073 - val_loss: 1.6934e-04 - val_mean_absolute_error: 0.0068
+Epoch 5/20
+77373/77373 [==============================] - 895s - loss: 1.4824e-04 - mean_absolute_error: 0.0065 - val_loss: 1.6358e-04 - val_mean_absolute_error: 0.0067
+Epoch 6/20
+77373/77373 [==============================] - 894s - loss: 1.3110e-04 - mean_absolute_error: 0.0061 - val_loss: 1.2855e-04 - val_mean_absolute_error: 0.0060
+Epoch 7/20
+77373/77373 [==============================] - 894s - loss: 1.1454e-04 - mean_absolute_error: 0.0058 - val_loss: 1.5608e-04 - val_mean_absolute_error: 0.0066
+Epoch 8/20
+77373/77373 [==============================] - 894s - loss: 1.0641e-04 - mean_absolute_error: 0.0056 - val_loss: 1.0961e-04 - val_mean_absolute_error: 0.0053
+Epoch 9/20
+77373/77373 [==============================] - 894s - loss: 9.9275e-05 - mean_absolute_error: 0.0054 - val_loss: 1.2793e-04 - val_mean_absolute_error: 0.0058
+Epoch 10/20
+77373/77373 [==============================] - 894s - loss: 9.3752e-05 - mean_absolute_error: 0.0052 - val_loss: 1.2618e-04 - val_mean_absolute_error: 0.0059
+Epoch 11/20
+77373/77373 [==============================] - 893s - loss: 8.8250e-05 - mean_absolute_error: 0.0050 - val_loss: 1.2933e-04 - val_mean_absolute_error: 0.0062
+Epoch 12/20
+77373/77373 [==============================] - 896s - loss: 8.4699e-05 - mean_absolute_error: 0.0049 - val_loss: 1.0163e-04 - val_mean_absolute_error: 0.0050
+Epoch 13/20
+77373/77373 [==============================] - 894s - loss: 7.8328e-05 - mean_absolute_error: 0.0047 - val_loss: 1.0709e-04 - val_mean_absolute_error: 0.0052
+Epoch 14/20
+77373/77373 [==============================] - 896s - loss: 7.6238e-05 - mean_absolute_error: 0.0047 - val_loss: 1.0409e-04 - val_mean_absolute_error: 0.0050
+Epoch 15/20
+77373/77373 [==============================] - 894s - loss: 7.3299e-05 - mean_absolute_error: 0.0046 - val_loss: 9.6869e-05 - val_mean_absolute_error: 0.0048
+Epoch 16/20
+77373/77373 [==============================] - 876s - loss: 7.1096e-05 - mean_absolute_error: 0.0045 - val_loss: 1.0187e-04 - val_mean_absolute_error: 0.0051
+Epoch 17/20
+77373/77373 [==============================] - 874s - loss: 6.7436e-05 - mean_absolute_error: 0.0044 - val_loss: 9.2254e-05 - val_mean_absolute_error: 0.0047
+Epoch 18/20
+77373/77373 [==============================] - 876s - loss: 6.5837e-05 - mean_absolute_error: 0.0043 - val_loss: 8.9753e-05 - val_mean_absolute_error: 0.0048
+Epoch 19/20
+77373/77373 [==============================] - 874s - loss: 6.4444e-05 - mean_absolute_error: 0.0043 - val_loss: 1.2942e-04 - val_mean_absolute_error: 0.0059
+Epoch 20/20
+77373/77373 [==============================] - 875s - loss: 6.1967e-05 - mean_absolute_error: 0.0042 - val_loss: 9.6033e-05 - val_mean_absolute_error: 0.0048
