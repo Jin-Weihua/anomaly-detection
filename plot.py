@@ -18,7 +18,7 @@ import plotly.graph_objs as go
 import pandas as pd
 
 dateparser = lambda x: pd.datetime.strptime(x, '%Y-%m-%d %H:%M:%S')
-data_raw = pd.read_csv(
+data_raw1 = pd.read_csv(
     'data/data_scaler.csv',
     sep=',',
     index_col=0,
@@ -26,21 +26,23 @@ data_raw = pd.read_csv(
     parse_dates=True,
     date_parser=dateparser)
 
-data_prd = pd.read_csv(
-    'data/LstmAutoEncoder2_prd.csv',
+data_prd1 = pd.read_csv(
+    'data/LstmAutoEncoder4_prd.csv',
     sep=',',
     index_col=0,
     encoding='utf-8',
     parse_dates=True,
     date_parser=dateparser)
 
+data_raw = data_raw1.iloc[0:10000]
+data_prd = data_prd1.iloc[0:10000]
 # data_plot = data_raw.iloc[96000:]
 
 data = []
-
-column = 'INA4_A电池组充电电流' 
-data.append(go.Scatter(x=data_raw.index, y=data_raw.iloc[20000:25000][column], mode='markers', name=column))
-data.append(go.Scatter(x=data_raw.index, y=data_prd.iloc[20000:25000][column], mode='markers', name=column))
+print(type(data_raw.index))
+column = 'VNZ4A组蓄电池BEA信号' 
+data.append(go.Scatter(x=data_raw.index, y=data_raw[column], mode='markers+lines', name=column))
+data.append(go.Scatter(x=data_prd.index, y=data_prd[column], mode='markers', name=column))
 
 
 # for column in data_raw.columns:
@@ -49,4 +51,4 @@ data.append(go.Scatter(x=data_raw.index, y=data_prd.iloc[20000:25000][column], m
 #             x=data_plot.index, y=data_plot[column], mode='markers', name=column))
 
 
-plotly.offline.plot(data, filename='result/column.html', auto_open=True)
+plotly.offline.plot(data, filename='result/VNZ4A组蓄电池BEA信号(0-10000).html', auto_open=True)

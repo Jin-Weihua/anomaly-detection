@@ -504,7 +504,11 @@ class LstmAutoEncoder4(object):
 
     @staticmethod
     def get_weight_file(model_dir_path):
-        return model_dir_path + '/' + LstmAutoEncoder4.model_name + '-weights.{epoch:02d}-{val_loss:.8f}.h5'
+        #lstm-auto-encoder4-weights.29-0.00008810.h5
+        return model_dir_path + '/' + 'lstm-auto-encoder4-weights.29-0.00008810.h5'
+        #+ LstmAutoEncoder4.model_name + '-weights.{epoch:02d}-{val_loss:.8f}.h5'
+
+        #return model_dir_path + '/' + LstmAutoEncoder4.model_name + '-weights.{epoch:02d}-{val_loss:.8f}.h5'
 
     @staticmethod
     def get_architecture_file(model_dir_path):

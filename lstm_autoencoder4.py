@@ -18,7 +18,7 @@ from sklearn.preprocessing import MinMaxScaler
 from library.plot_utils import visualize_reconstruction_error
 from library.auto_encoder import LstmAutoEncoder4
 
-DO_TRAINING = True
+DO_TRAINING = False
 
 
 def main():
