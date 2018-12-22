@@ -588,6 +588,7 @@ class LstmAutoEncoder5(object):
 
     def __init__(self, index, columns):
         self.model = None
+        self.batch_size = None
         self.time_window_size = None
         self.input_dim = None
         self.config = None
@@ -597,10 +598,10 @@ class LstmAutoEncoder5(object):
         self.columns = columns
 
     @staticmethod
-    def create_model(time_window_size, input_dim, metric):
+    def create_model(batch_size, time_window_size, input_dim, metric):
         model = Sequential()
         # model.add(LSTM(units=9, input_shape=(time_window_size, 1), return_sequences=True))
-        model.add(LSTM(units=9, input_length = time_window_size, input_dim = input_dim, return_sequences=True))
+        model.add(LSTM(units=9, batch_size = batch_size, input_length = time_window_size, input_dim = input_dim, stateful = True, return_sequences=True))
 
         #model.add(LSTM(9))
         model.add(LSTM(units=input_dim))
@@ -615,6 +616,7 @@ class LstmAutoEncoder5(object):
         config_file_path = LstmAutoEncoder5.get_config_file(model_dir_path)
         self.config = np.load(config_file_path).item()
         self.metric = self.config['metric']
+        self.batch_size = self.config['batch_size']
         self.input_dim = self.config['input_dim']
         self.time_window_size = self.config['time_window_size']
         self.threshold = self.config['threshold']
@@ -654,6 +656,7 @@ class LstmAutoEncoder5(object):
             estimated_negative_sample_ratio = 0.9
 
         self.metric = metric
+        self.batch_size = batch_size
         self.time_window_size =time_window_size
         input_dataset = np.reshape(timeseries_dataset,((int)(timeseries_dataset.shape[0]/time_window_size),time_window_size,timeseries_dataset.shape[1]))
         self.input_dim = input_dataset.shape[2]
@@ -661,7 +664,7 @@ class LstmAutoEncoder5(object):
         weight_file_path = LstmAutoEncoder5.get_weight_file(model_dir_path=model_dir_path)
         architecture_file_path = LstmAutoEncoder5.get_architecture_file(model_dir_path)
         checkpoint = ModelCheckpoint(weight_file_path)
-        self.model = LstmAutoEncoder5.create_model(self.time_window_size, self.input_dim, metric=self.metric)
+        self.model = LstmAutoEncoder5.create_model(batch_size, self.time_window_size, self.input_dim, metric=self.metric)
         open(architecture_file_path, 'w').write(self.model.to_json())
         history = self.model.fit(x=input_dataset, y=timeseries_dataset,
                        batch_size=batch_size, epochs=epochs,
@@ -685,6 +688,7 @@ class LstmAutoEncoder5(object):
         print('estimated threshold is ' + str(self.threshold))
 
         self.config = dict()
+        self.batch_size = self.batch_size
         self.config['time_window_size'] = self.time_window_size
         self.config['metric'] = self.metric
         self.config['threshold'] = self.threshold
