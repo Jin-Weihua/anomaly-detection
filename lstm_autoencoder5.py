@@ -16,7 +16,7 @@ import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 
 from library.plot_utils import visualize_reconstruction_error
-from library.auto_encoder import LstmAutoEncoder4
+from library.auto_encoder import LstmAutoEncoder5
 
 DO_TRAINING = True
 
@@ -40,16 +40,18 @@ def main():
     print(satellite_np_data.shape)
     index = satellite_data.index
     columns = satellite_data.columns
+    time_window_size = 1
     # data_std = pd.DataFrame(satellite_np_data, index=index, columns=columns)
     # data_std.to_csv('data/data_scaler.csv', encoding='utf-8')
 
-    ae = LstmAutoEncoder4(index, columns)
+    ae = LstmAutoEncoder5(index, columns)
 
     # fit the data and save model into model_dir_path
     if DO_TRAINING:
         ae.fit(
-            satellite_np_data[:96717, :],
+            satellite_np_data,
             model_dir_path=model_dir_path,
+            time_window_size=time_window_size,
             estimated_negative_sample_ratio=0.9)
 
     # load back the model saved in model_dir_path detect anomaly
