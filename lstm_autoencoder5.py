@@ -25,14 +25,14 @@ def main():
     data_dir_path = 'data'
     model_dir_path = 'model'
     dateparser = lambda x: pd.datetime.strptime(x, '%Y-%m-%d %H:%M:%S')
-    satellite_data = pd.read_csv(
+    satellite_data1 = pd.read_csv(
         data_dir_path + '/data_std.csv',
         sep=',',
         index_col=0,
         encoding='utf-8',
         parse_dates=True,
         date_parser=dateparser)
-    #satellite_data = satellite_data1.iloc[0:100]
+    satellite_data = satellite_data1.iloc[0:96700]
     print(satellite_data.head())
     satellite_np_data = satellite_data.as_matrix()
     scaler = MinMaxScaler()
@@ -56,7 +56,7 @@ def main():
 
     # load back the model saved in model_dir_path detect anomaly
     ae.load_model(model_dir_path)
-    anomaly_information = ae.anomaly(satellite_np_data[:96717, :])
+    anomaly_information = ae.anomaly(satellite_np_data[:96700, :])
     reconstruction_error = []
     for idx, (is_anomaly, dist) in enumerate(anomaly_information):
         print('# ' + str(idx) + ' is ' +

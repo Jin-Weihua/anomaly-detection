@@ -643,7 +643,7 @@ class LstmAutoEncoder5(object):
     def fit(self, timeseries_dataset, model_dir_path, batch_size=None, time_window_size=None, epochs=None, validation_split=None, metric=None,
             estimated_negative_sample_ratio=None):
         if batch_size is None:
-            batch_size = 8
+            batch_size = 10
         if time_window_size is None:
             time_window_size = 10
         if epochs is None:
