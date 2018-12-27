@@ -33,7 +33,7 @@ def main():
         encoding='utf-8',
         parse_dates=True,
         date_parser=dateparser)
-    satellite_data = satellite_data1.iloc[0:100]#96700
+    satellite_data = satellite_data1.iloc[0:96700]#96700
     print(satellite_data.head())
     satellite_np_data = satellite_data.as_matrix()
     scaler = MinMaxScaler()

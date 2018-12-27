@@ -27,7 +27,7 @@ data_raw1 = pd.read_csv(
     date_parser=dateparser)
 
 data_prd1 = pd.read_csv(
-    'data/LstmAutoEncoder4_prd.csv',
+    'data/LstmAutoEncoder6_prd.csv',
     sep=',',
     index_col=0,
     encoding='utf-8',
@@ -40,7 +40,7 @@ data_prd = data_prd1.iloc[0:10000]
 
 data = []
 print(type(data_raw.index))
-column = 'VNZ4A组蓄电池BEA信号' 
+column = 'INA2_A电池组放电电流' 
 data.append(go.Scatter(x=data_raw.index, y=data_raw[column], mode='markers+lines', name=column))
 data.append(go.Scatter(x=data_prd.index, y=data_prd[column], mode='markers', name=column))
 
@@ -51,4 +51,4 @@ data.append(go.Scatter(x=data_prd.index, y=data_prd[column], mode='markers', nam
 #             x=data_plot.index, y=data_plot[column], mode='markers', name=column))
 
 
-plotly.offline.plot(data, filename='result/VNZ4A组蓄电池BEA信号(0-10000).html', auto_open=True)
+plotly.offline.plot(data, filename='result/6-INA2_A电池组放电电流(0-10000).html', auto_open=True)

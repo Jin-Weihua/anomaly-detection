@@ -1,0 +1,60 @@
+77360/77360 [==============================] - 113s - loss: 0.0113 - mean_absolute_error: 0.0496 - val_loss: 0.0027 - val_mean_absolute_error: 0.0197
+Epoch 2/30
+77360/77360 [==============================] - 115s - loss: 0.0015 - mean_absolute_error: 0.0155 - val_loss: 0.0020 - val_mean_absolute_error: 0.0157
+Epoch 3/30
+77360/77360 [==============================] - 113s - loss: 8.8006e-04 - mean_absolute_error: 0.0119 - val_loss: 0.0015 - val_mean_absolute_error: 0.0138
+Epoch 4/30
+77360/77360 [==============================] - 114s - loss: 6.6340e-04 - mean_absolute_error: 0.0100 - val_loss: 8.8998e-04 - val_mean_absolute_error: 0.0112
+Epoch 5/30
+77360/77360 [==============================] - 114s - loss: 6.2800e-04 - mean_absolute_error: 0.0094 - val_loss: 0.0010 - val_mean_absolute_error: 0.0109
+Epoch 6/30
+77360/77360 [==============================] - 114s - loss: 6.5493e-04 - mean_absolute_error: 0.0091 - val_loss: 8.7344e-04 - val_mean_absolute_error: 0.0107
+Epoch 7/30
+77360/77360 [==============================] - 111s - loss: 6.6772e-04 - mean_absolute_error: 0.0090 - val_loss: 8.5832e-04 - val_mean_absolute_error: 0.0111
+Epoch 8/30
+77360/77360 [==============================] - 113s - loss: 5.8670e-04 - mean_absolute_error: 0.0088 - val_loss: 9.1659e-04 - val_mean_absolute_error: 0.0104
+Epoch 9/30
+77360/77360 [==============================] - 112s - loss: 5.5248e-04 - mean_absolute_error: 0.0087 - val_loss: 8.9258e-04 - val_mean_absolute_error: 0.0101
+Epoch 10/30
+77360/77360 [==============================] - 114s - loss: 5.2004e-04 - mean_absolute_error: 0.0084 - val_loss: 7.9422e-04 - val_mean_absolute_error: 0.0098
+Epoch 11/30
+77360/77360 [==============================] - 114s - loss: 5.1133e-04 - mean_absolute_error: 0.0083 - val_loss: 8.9245e-04 - val_mean_absolute_error: 0.0099
+Epoch 12/30
+77360/77360 [==============================] - 114s - loss: 5.6614e-04 - mean_absolute_error: 0.0085 - val_loss: 7.2747e-04 - val_mean_absolute_error: 0.0095
+Epoch 13/30
+77360/77360 [==============================] - 114s - loss: 5.5434e-04 - mean_absolute_error: 0.0084 - val_loss: 6.6785e-04 - val_mean_absolute_error: 0.0094
+Epoch 14/30
+77360/77360 [==============================] - 114s - loss: 5.3806e-04 - mean_absolute_error: 0.0083 - val_loss: 8.1258e-04 - val_mean_absolute_error: 0.0096
+Epoch 15/30
+77360/77360 [==============================] - 111s - loss: 5.1917e-04 - mean_absolute_error: 0.0082 - val_loss: 0.0011 - val_mean_absolute_error: 0.0100
+Epoch 16/30
+77360/77360 [==============================] - 112s - loss: 5.1162e-04 - mean_absolute_error: 0.0081 - val_loss: 8.8972e-04 - val_mean_absolute_error: 0.0091
+Epoch 17/30
+77360/77360 [==============================] - 113s - loss: 5.2809e-04 - mean_absolute_error: 0.0081 - val_loss: 0.0010 - val_mean_absolute_error: 0.0097
+Epoch 18/30
+77360/77360 [==============================] - 113s - loss: 5.2455e-04 - mean_absolute_error: 0.0080 - val_loss: 8.5947e-04 - val_mean_absolute_error: 0.0090
+Epoch 19/30
+77360/77360 [==============================] - 112s - loss: 5.2014e-04 - mean_absolute_error: 0.0080 - val_loss: 8.0316e-04 - val_mean_absolute_error: 0.0090
+Epoch 20/30
+77360/77360 [==============================] - 112s - loss: 5.2571e-04 - mean_absolute_error: 0.0080 - val_loss: 0.0012 - val_mean_absolute_error: 0.0096
+Epoch 21/30
+77360/77360 [==============================] - 112s - loss: 5.2493e-04 - mean_absolute_error: 0.0079 - val_loss: 9.5570e-04 - val_mean_absolute_error: 0.0091
+Epoch 22/30
+77360/77360 [==============================] - 112s - loss: 5.3000e-04 - mean_absolute_error: 0.0079 - val_loss: 0.0011 - val_mean_absolute_error: 0.0096
+Epoch 23/30
+77360/77360 [==============================] - 112s - loss: 5.2321e-04 - mean_absolute_error: 0.0079 - val_loss: 9.8100e-04 - val_mean_absolute_error: 0.0092
+Epoch 24/30
+77360/77360 [==============================] - 105s - loss: 5.2418e-04 - mean_absolute_error: 0.0079 - val_loss: 0.0011 - val_mean_absolute_error: 0.0093
+Epoch 25/30
+77360/77360 [==============================] - 114s - loss: 5.2349e-04 - mean_absolute_error: 0.0078 - val_loss: 8.9955e-04 - val_mean_absolute_error: 0.0090
+Epoch 26/30
+77360/77360 [==============================] - 114s - loss: 5.2283e-04 - mean_absolute_error: 0.0078 - val_loss: 0.0011 - val_mean_absolute_error: 0.0090
+Epoch 27/30
+77360/77360 [==============================] - 114s - loss: 5.2533e-04 - mean_absolute_error: 0.0078 - val_loss: 7.8455e-04 - val_mean_absolute_error: 0.0089
+Epoch 28/30
+77360/77360 [==============================] - 111s - loss: 5.2574e-04 - mean_absolute_error: 0.0078 - val_loss: 7.9071e-04 - val_mean_absolute_error: 0.0086
+Epoch 29/30
+77360/77360 [==============================] - 112s - loss: 5.2684e-04 - mean_absolute_error: 0.0078 - val_loss: 0.0010 - val_mean_absolute_error: 0.0091
+Epoch 30/30
+77360/77360 [==============================] - 110s - loss: 5.1601e-04 - mean_absolute_error: 0.0077 - val_loss: 0.0010 - val_mean_absolute_error: 0.0089
+estimated threshold is 0.0778536659351
