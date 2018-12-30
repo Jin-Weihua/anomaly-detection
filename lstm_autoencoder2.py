@@ -48,13 +48,13 @@ def main():
     # fit the data and save model into model_dir_path
     if DO_TRAINING:
         ae.fit(
-            satellite_np_data[:96717, :],
+            satellite_np_data[:80, :],
             model_dir_path=model_dir_path,
             estimated_negative_sample_ratio=0.9)
 
     # load back the model saved in model_dir_path detect anomaly
     ae.load_model(model_dir_path)
-    anomaly_information = ae.anomaly(satellite_np_data[:96717, :])
+    anomaly_information = ae.anomaly(satellite_np_data[:80, :])
     reconstruction_error = []
     for idx, (is_anomaly, dist) in enumerate(anomaly_information):
         print('# ' + str(idx) + ' is ' +

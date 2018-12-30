@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 from keras.layers import Input, Conv1D, GlobalMaxPool1D, Dense, Flatten, LSTM, Bidirectional, RepeatVector, MaxPooling1D, Dropout
 from keras.models import Sequential, Model
 from keras.callbacks import ModelCheckpoint
+from keras import optimizers
 import numpy as np
 import pandas as pd
 
@@ -169,7 +170,7 @@ class LstmAutoEncoder1(object):
                 input_shape=(time_window_size, 1),
                 return_sequences=True))
         #model.add(LSTM(9))
-        model.add(LSTM(units=time_window_size))
+        model.add(LSTM(units=time_window_size))#,return_sequences=True))
 
         #model.add(Dense(units=time_window_size, activation='linear'))
 
@@ -294,19 +295,11 @@ class LstmAutoEncoder2(object):
     @staticmethod
     def create_model(time_window_size, metric):
         model = Sequential()
-        model.add(
-            LSTM(
-                units=18,
-                input_shape=(time_window_size, 1),
-                return_sequences=True))
-        model.add(Dropout(0.4))
-        model.add(LSTM(9, return_sequences=True))
-        model.add(Dropout(0.4))
-        model.add(LSTM(9, return_sequences=True))
-        model.add(Dropout(0.4))
-        model.add(LSTM(18, return_sequences=True))
-        model.add(Dropout(0.4))
+        model.add(LSTM(units=9,input_shape=(time_window_size, 1),return_sequences=True))
+        # model.add(LSTM(units=9,,return_sequences=True))
+        model.add(LSTM(units=9,return_sequences=True))
         model.add(LSTM(units=time_window_size))
+
 
         #model.add(Dense(units=time_window_size, activation='linear'))
 
@@ -887,9 +880,9 @@ class LstmAutoEncoder6(object):
         # decoded = Dense(9)(encoded)
         decoded = LSTM(units=input_dim, stateful=True, return_sequences=True)(encoded)
         autoencoder = Model(inputs=input_data, outputs=decoded)
-
+        adam = keras.optimizers.Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
         autoencoder.compile(
-            optimizer='adam', loss='mean_squared_error', metrics=[metric])
+            optimizer=adam, loss='mean_squared_error', metrics=[metric])
         print(autoencoder.summary())
         return autoencoder
 
@@ -1035,16 +1028,19 @@ class LstmAutoEncoder7(object):
     @staticmethod
     def create_model(batch_size, time_window_size, input_dim, metric):
         input_data = Input(batch_shape=(batch_size,time_window_size, input_dim))
-        encoded = LSTM(units=9, stateful=True, return_sequences=True)(input_data)
+        # encoded = LSTM(units=18,kernel_initializer='lecun_uniform', activation='softsign', stateful=True, return_sequences=True)(input_data)
+        encoded = LSTM(units=9,kernel_initializer='lecun_uniform', activation='softsign', stateful=True, return_sequences=True)(encoded)
         # dropout = Dropout(0.6)(encoded)
-        # encoded = Dense(9)(dropout)
+        # encoded = Dense(9)(encoded)
         # dropout = Dropout(0.6)(encoded)
         # decoded = Dense(9)(encoded)
-        decoded = LSTM(units=input_dim, stateful=True, return_sequences=True)(encoded)
+        # decoded = LSTM(units=9, kernel_initializer='lecun_uniform', activation='softsign', stateful=True, return_sequences=True)(encoded)
+        # decoded = LSTM(units=18, kernel_initializer='lecun_uniform', activation='softsign', stateful=True, return_sequences=True)(decoded)
+        decoded = Dense(units = input_dim,activation='tanh')(decoded)
+        # decoded = LSTM(units=input_dim, kernel_initializer='lecun_uniform', stateful=True, return_sequences=True)(decoded)
         autoencoder = Model(inputs=input_data, outputs=decoded)
 
-        autoencoder.compile(
-            optimizer='adam', loss='mean_squared_error', metrics=[metric])
+        autoencoder.compile(optimizer='adam', loss='mean_squared_error', metrics=[metric])
         print(autoencoder.summary())
         return autoencoder
 
@@ -1068,7 +1064,7 @@ class LstmAutoEncoder7(object):
     @staticmethod
     def get_weight_file(model_dir_path):
         #lstm-auto-encoder4-weights.29-0.00008810.h5
-        return model_dir_path + '/' + 'lstm-auto-encoder6-weights.05-0.09952649.h5'
+        return model_dir_path + '/' + 'lstm-auto-encoder7-weights.05-0.09952649.h5'
         #return model_dir_path + '/' + LstmAutoEncoder7.model_name + '-weights.{epoch:02d}-{val_loss:.8f}.h5'
 
     @staticmethod
@@ -1085,11 +1081,11 @@ class LstmAutoEncoder7(object):
             metric=None,
             estimated_negative_sample_ratio=None):
         if batch_size is None:
-            batch_size = 8
+            batch_size = 1
         if time_window_size is None:
             time_window_size = 10
         if epochs is None:
-            epochs = 30
+            epochs = 1000
         if validation_split is None:
             validation_split = 0.2
         if metric is None:
