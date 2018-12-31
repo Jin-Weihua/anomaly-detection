@@ -1029,14 +1029,14 @@ class LstmAutoEncoder7(object):
     def create_model(batch_size, time_window_size, input_dim, metric):
         input_data = Input(batch_shape=(batch_size,time_window_size, input_dim))
         # encoded = LSTM(units=18,kernel_initializer='lecun_uniform', activation='softsign', stateful=True, return_sequences=True)(input_data)
-        encoded = LSTM(units=9,kernel_initializer='lecun_uniform', activation='softsign', stateful=True, return_sequences=True)(encoded)
+        encoded = LSTM(units=9,kernel_initializer='lecun_uniform', activation='softsign', stateful=True, return_sequences=True)(input_data)
         # dropout = Dropout(0.6)(encoded)
         # encoded = Dense(9)(encoded)
         # dropout = Dropout(0.6)(encoded)
         # decoded = Dense(9)(encoded)
         # decoded = LSTM(units=9, kernel_initializer='lecun_uniform', activation='softsign', stateful=True, return_sequences=True)(encoded)
         # decoded = LSTM(units=18, kernel_initializer='lecun_uniform', activation='softsign', stateful=True, return_sequences=True)(decoded)
-        decoded = Dense(units = input_dim,activation='tanh')(decoded)
+        decoded = Dense(units = input_dim,activation='tanh')(encoded)
         # decoded = LSTM(units=input_dim, kernel_initializer='lecun_uniform', stateful=True, return_sequences=True)(decoded)
         autoencoder = Model(inputs=input_data, outputs=decoded)
 
