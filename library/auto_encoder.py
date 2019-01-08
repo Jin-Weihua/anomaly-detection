@@ -11,10 +11,10 @@
 
 # here put the import lib
 import matplotlib.pyplot as plt
-from keras.layers import Input, Conv1D, GlobalMaxPool1D, Dense, Flatten, LSTM, Bidirectional, RepeatVector, MaxPooling1D, Dropout
+from keras.layers import Reshape, Input, Conv1D, GlobalMaxPool1D, Dense, Flatten, LSTM, Bidirectional, RepeatVector, MaxPooling1D, Dropout
 from keras.models import Sequential, Model
 from keras.callbacks import ModelCheckpoint
-from keras import optimizers
+from keras import optimizers, metrics
 import numpy as np
 import pandas as pd
 
@@ -872,19 +872,49 @@ class LstmAutoEncoder6(object):
 
     @staticmethod
     def create_model(batch_size, time_window_size, input_dim, metric):
-        input_data = Input(batch_shape=(batch_size,time_window_size, input_dim))
-        encoded = LSTM(units=9, stateful=True, return_sequences=True)(input_data)
-        # dropout = Dropout(0.6)(encoded)
-        # encoded = Dense(9)(dropout)
-        # dropout = Dropout(0.6)(encoded)
-        # decoded = Dense(9)(encoded)
-        decoded = LSTM(units=input_dim, stateful=True, return_sequences=True)(encoded)
-        autoencoder = Model(inputs=input_data, outputs=decoded)
-        adam = keras.optimizers.Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
-        autoencoder.compile(
-            optimizer=adam, loss='mean_squared_error', metrics=[metric])
-        print(autoencoder.summary())
-        return autoencoder
+        # input_data = Input(batch_shape=(batch_size,time_window_size, input_dim))
+        # encoded = LSTM(units=9, stateful=True, return_sequences=True)(input_data)
+        # # dropout = Dropout(0.6)(encoded)
+        # # encoded = Dense(9)(dropout)
+        # # dropout = Dropout(0.6)(encoded)
+        # # decoded = Dense(9)(encoded)
+        # decoded = LSTM(units=input_dim, stateful=True, return_sequences=True)(encoded)
+        # input_data = Input(shape=(input_dim,))
+        # # 编码层
+        # encoded = Dense(9, activation='relu')(input_data)
+        # # encoded = Dense(64, activation='relu')(encoded)
+        # # encoded = Dense(10, activation='relu')(encoded)
+        # # encoder_output = Dense(encoding_dim)(encoded)
+        
+        # # 解码层
+        # # decoded = Dense(10, activation='relu')(encoder_output)
+        # # decoded = Dense(64, activation='relu')(decoded)
+        # # decoded = Dense(128, activation='relu')(decoded)
+        # decoded = Dense(input_dim, activation='tanh')(encoded)
+
+        # model = Sequential()
+        # model.add(LSTM(units=9,input_shape=(time_window_size, input_dim),return_sequences=True))
+        # #model.add(LSTM(9))
+        # model.add(Dense(units=input_dim, activation='tanh'))
+        # model.add(Dense(units=input_dim, activation='tanh'))
+        model = Sequential()
+        # model.add(
+        #     LSTM(
+        #         units=9,
+        #         input_shape=(time_window_size, 1),
+        #         return_sequences=True))
+        #model.add(LSTM(9))
+        model.add(LSTM(units=int(0.9*time_window_size*9),input_shape=(time_window_size, 9),return_sequences=False))
+        
+        model.add(Dense(units=int(time_window_size*9), activation='tanh'))
+        model.add(Reshape((time_window_size,9)))
+
+        # autoencoder = Model(inputs=input_data, outputs=decoded)
+        adam = optimizers.Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
+        model.compile(
+            optimizer=adam, loss='mae', metrics=[metric])
+        print(model.summary())
+        return model
 
     def load_model(self, model_dir_path):
         config_file_path = LstmAutoEncoder6.get_config_file(model_dir_path)
@@ -927,7 +957,7 @@ class LstmAutoEncoder6(object):
         if time_window_size is None:
             time_window_size = 10
         if epochs is None:
-            epochs = 30
+            epochs = 2000
         if validation_split is None:
             validation_split = 0.2
         if metric is None:
@@ -993,8 +1023,8 @@ class LstmAutoEncoder6(object):
     def predict(self, input_timeseries_dataset,batch_size):
         target_timeseries_dataset = self.model.predict(
             x=input_timeseries_dataset,batch_size=batch_size)
-        result_dataset = np.reshape(target_timeseries_dataset,(target_timeseries_dataset.shape[0],target_timeseries_dataset.shape[2]))
-        original_dataset = np.reshape(input_timeseries_dataset,(input_timeseries_dataset.shape[0],input_timeseries_dataset.shape[2]))
+        result_dataset = np.reshape(target_timeseries_dataset,(target_timeseries_dataset.shape[0]*target_timeseries_dataset.shape[1],target_timeseries_dataset.shape[2]))
+        original_dataset = np.reshape(input_timeseries_dataset,(input_timeseries_dataset.shape[0]*input_timeseries_dataset.shape[1],input_timeseries_dataset.shape[2]))
         data_target = pd.DataFrame(
             result_dataset, index=self.index, columns=self.columns)
         data_target.to_csv('data/LstmAutoEncoder6_prd.csv', encoding='utf-8')
