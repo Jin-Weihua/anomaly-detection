@@ -278,14 +278,15 @@ class LstmAutoEncoder1(object):
         dist = self.predict(timeseries_dataset)
         return zip(dist >= self.threshold, dist)
 
-
 class LstmAutoEncoder2(object):
     model_name = 'lstm-auto-encoder2'
     VERBOSE = 1
 
     def __init__(self, index, columns):
         self.model = None
+        self.batch_size = None
         self.time_window_size = None
+        self.input_dim = None
         self.config = None
         self.metric = None
         self.threshold = None
@@ -293,18 +294,14 @@ class LstmAutoEncoder2(object):
         self.columns = columns
 
     @staticmethod
-    def create_model(time_window_size, metric):
+    def create_model(batch_size, time_window_size, input_dim, metric):
         model = Sequential()
-        model.add(LSTM(units=9,input_shape=(time_window_size, 1),return_sequences=True))
-        # model.add(LSTM(units=9,,return_sequences=True))
-        model.add(LSTM(units=9,return_sequences=True))
-        model.add(LSTM(units=time_window_size))
-
-
-        #model.add(Dense(units=time_window_size, activation='linear'))
-
+        model.add(Dense(units=5, input_shape=(input_dim,), activation='relu'))
+        # model.add(Dense(units=5,activation='relu'))
+        model.add(Dense(units=input_dim, activation='relu'))
+        adam = optimizers.Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
         model.compile(
-            optimizer='adam', loss='mean_squared_error', metrics=[metric])
+            optimizer=adam, loss='mae', metrics=[metric])
         print(model.summary())
         return model
 
@@ -312,9 +309,11 @@ class LstmAutoEncoder2(object):
         config_file_path = LstmAutoEncoder2.get_config_file(model_dir_path)
         self.config = np.load(config_file_path).item()
         self.metric = self.config['metric']
+        self.batch_size = self.config['batch_size']
+        self.input_dim = self.config['input_dim']
         self.time_window_size = self.config['time_window_size']
         self.threshold = self.config['threshold']
-        self.model = LstmAutoEncoder2.create_model(self.time_window_size,
+        self.model = LstmAutoEncoder2.create_model(self.batch_size,self.time_window_size,self.input_dim,
                                                    self.metric)
         weight_file_path = LstmAutoEncoder2.get_weight_file(model_dir_path)
         self.model.load_weights(weight_file_path)
@@ -325,7 +324,9 @@ class LstmAutoEncoder2(object):
 
     @staticmethod
     def get_weight_file(model_dir_path):
-        return model_dir_path + '/' + LstmAutoEncoder2.model_name + '-weights.h5'
+        #lstm-auto-encoder4-weights.29-0.00008810.h5
+        #return model_dir_path + '/' + 'lstm-auto-encoder2-weights.20-0.15567725.h5'
+        return model_dir_path + '/' + LstmAutoEncoder2.model_name + '-weights.{epoch:02d}-{val_loss:.8f}.h5'
 
     @staticmethod
     def get_architecture_file(model_dir_path):
@@ -335,12 +336,15 @@ class LstmAutoEncoder2(object):
             timeseries_dataset,
             model_dir_path,
             batch_size=None,
+            time_window_size=None,
             epochs=None,
             validation_split=None,
             metric=None,
             estimated_negative_sample_ratio=None):
         if batch_size is None:
-            batch_size = 8
+            batch_size = 10
+        if time_window_size is None:
+            time_window_size = 10
         if epochs is None:
             epochs = 20
         if validation_split is None:
@@ -351,9 +355,13 @@ class LstmAutoEncoder2(object):
             estimated_negative_sample_ratio = 0.9
 
         self.metric = metric
-        self.time_window_size = timeseries_dataset.shape[1]
-
-        input_timeseries_dataset = np.expand_dims(timeseries_dataset, axis=2)
+        self.batch_size = batch_size
+        self.time_window_size = time_window_size
+        # input_dataset = np.reshape(
+        #     timeseries_dataset,
+        #     ((int)(timeseries_dataset.shape[0] / time_window_size),
+        #      time_window_size, timeseries_dataset.shape[1]))
+        self.input_dim = timeseries_dataset.shape[1]
 
         weight_file_path = LstmAutoEncoder2.get_weight_file(
             model_dir_path=model_dir_path)
@@ -361,19 +369,31 @@ class LstmAutoEncoder2(object):
             model_dir_path)
         checkpoint = ModelCheckpoint(weight_file_path)
         self.model = LstmAutoEncoder2.create_model(
-            self.time_window_size, metric=self.metric)
+            batch_size,
+            self.time_window_size,
+            self.input_dim,
+            metric=self.metric)
         open(architecture_file_path, 'w').write(self.model.to_json())
-        self.model.fit(
-            x=input_timeseries_dataset,
+        history = self.model.fit(
+            x=timeseries_dataset,
             y=timeseries_dataset,
             batch_size=batch_size,
             epochs=epochs,
             verbose=LstmAutoEncoder2.VERBOSE,
             validation_split=validation_split,
+            shuffle=False,
             callbacks=[checkpoint])
-        self.model.save_weights(weight_file_path)
+        #self.model.save_weights(weight_file_path)
+        plt.plot(history.history['loss'])
+        plt.plot(history.history['val_loss'])
+        plt.title("model loss")
+        plt.ylabel("loss")
+        plt.xlabel("epoch")
+        plt.legend(["train", "test"], loc="upper left")
+        #plt.show()
+        plt.savefig('result/{}.png'.format(self.model_name))
 
-        scores = self.predict(timeseries_dataset)
+        scores = self.predict(timeseries_dataset,batch_size)
         scores.sort()
         cut_point = int(estimated_negative_sample_ratio * len(scores))
         self.threshold = scores[cut_point]
@@ -381,30 +401,32 @@ class LstmAutoEncoder2(object):
         print('estimated threshold is ' + str(self.threshold))
 
         self.config = dict()
+        self.config['batch_size'] = self.batch_size
         self.config['time_window_size'] = self.time_window_size
         self.config['metric'] = self.metric
         self.config['threshold'] = self.threshold
+        self.config['input_dim'] = self.input_dim
         config_file_path = LstmAutoEncoder2.get_config_file(
             model_dir_path=model_dir_path)
         np.save(config_file_path, self.config)
 
-    def predict(self, timeseries_dataset):
-        input_timeseries_dataset = np.expand_dims(timeseries_dataset, axis=2)
+    def predict(self, input_timeseries_dataset,batch_size):
         target_timeseries_dataset = self.model.predict(
-            x=input_timeseries_dataset)
+            x=input_timeseries_dataset,batch_size=batch_size)
+        result_dataset = target_timeseries_dataset#np.reshape(target_timeseries_dataset,(target_timeseries_dataset.shape[0]*target_timeseries_dataset.shape[1],target_timeseries_dataset.shape[2]))
+        original_dataset = input_timeseries_dataset#np.reshape(input_timeseries_dataset,(input_timeseries_dataset.shape[0]*input_timeseries_dataset.shape[1],input_timeseries_dataset.shape[2]))
         data_target = pd.DataFrame(
-            target_timeseries_dataset, index=self.index, columns=self.columns)
+            result_dataset, index=self.index, columns=self.columns)
         data_target.to_csv('data/LstmAutoEncoder2_prd.csv', encoding='utf-8')
-        print(type(target_timeseries_dataset))
         dist = np.linalg.norm(
-            timeseries_dataset - target_timeseries_dataset, axis=-1)
+            result_dataset - original_dataset, axis=-1)
         return dist
 
     def anomaly(self, timeseries_dataset, threshold=None):
         if threshold is not None:
             self.threshold = threshold
 
-        dist = self.predict(timeseries_dataset)
+        dist = self.predict(timeseries_dataset,self.batch_size)
         return zip(dist >= self.threshold, dist)
 
 
