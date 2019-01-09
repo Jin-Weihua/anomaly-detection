@@ -19,8 +19,8 @@ satellite_data1 = pd.read_csv(
     date_parser=dateparser)
 # column = ['INA1_PCU输出母线电流','INA4_A电池组充电电流','INA2_A电池组放电电流','TNZ1PCU分流模块温度1','INZ6_-Y太阳电池阵电流','VNA2_A蓄电池整组电压','VNC1_蓄电池A单体1电压','VNZ2MEA电压(S3R)','VNZ4A组蓄电池BEA信号']
 
-column = ['INA1_PCU输出母线电流']#,'INA4_A电池组充电电流','INA2_A电池组放电电流','TNZ1PCU分流模块温度1','INZ6_-Y太阳电池阵电流','VNA2_A蓄电池整组电压','VNC1_蓄电池A单体1电压','VNZ2MEA电压(S3R)','VNZ4A组蓄电池BEA信号']
-satellite_data = satellite_data1.loc[:,column].iloc[0:80].rolling(5).mean()#96700
+column = ['INA4_A电池组充电电流','INA2_A电池组放电电流','TNZ1PCU分流模块温度1','INZ6_-Y太阳电池阵电流','VNA2_A蓄电池整组电压','VNC1_蓄电池A单体1电压','VNZ2MEA电压(S3R)','VNZ4A组蓄电池BEA信号']
+satellite_data = satellite_data1.loc[:,column].iloc[2920:3000]#.rolling(5).mean()#96700
 satellite_data = satellite_data.dropna()
 print(satellite_data.head())
 satellite_np_data = satellite_data.as_matrix()
@@ -43,10 +43,10 @@ print(x_train.shape)
 print(x_test.shape)
  
 # this is our input placeholder
-input_data = Input(shape=(1,))
+input_data = Input(shape=(8,))
  
 # 编码层
-encoded = Dense(1, activation='selu')(input_data)
+encoded = Dense(8, activation='selu')(input_data)
 # encoded = Dense(64, activation='relu')(encoded)
 # encoded = Dense(10, activation='relu')(encoded)
 # encoder_output = Dense(encoding_dim)(encoded)
@@ -55,7 +55,7 @@ encoded = Dense(1, activation='selu')(input_data)
 # decoded = Dense(10, activation='relu')(encoded)
 # decoded = Dense(64, activation='relu')(decoded)
 # decoded = Dense(128, activation='relu')(decoded)
-decoded = Dense(1, activation='selu')(encoded)
+decoded = Dense(8, activation='selu')(encoded)
  
 # 构建自编码模型
 autoencoder = Model(inputs=input_data, outputs=decoded)
