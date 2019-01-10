@@ -295,15 +295,24 @@ class LstmAutoEncoder2(object):
 
     @staticmethod
     def create_model(batch_size, time_window_size, input_dim, metric):
-        model = Sequential()
-        model.add(Dense(units=5, input_shape=(input_dim,), activation='relu'))
-        # model.add(Dense(units=5,activation='relu'))
-        model.add(Dense(units=input_dim, activation='relu'))
-        adam = optimizers.Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
-        model.compile(
-            optimizer=adam, loss='mae', metrics=[metric])
-        print(model.summary())
-        return model
+        input_data = Input(shape=(input_dim,))
+        encoded = Dense(input_dim, activation='selu')(input_data)
+        encoded = Dense(5, activation='selu')(encoded)
+        decoded = Dense(5, activation='selu')(encoded)
+        decoded = Dense(input_dim, activation='selu')(decoded)
+ 
+        # 构建自编码模型
+        autoencoder = Model(inputs=input_data, outputs=decoded)
+        autoencoder.compile(optimizer='adam', loss='mae', metrics=[metric])
+        # model = Sequential()
+        # model.add(Dense(units=5, input_shape=(input_dim,), activation='relu'))
+        # # model.add(Dense(units=5,activation='relu'))
+        # model.add(Dense(units=input_dim, activation='relu'))
+        # # adam = optimizers.Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
+        # model.compile(
+        #     optimizer='adam', loss='mae', metrics=[metric])
+        print(autoencoder.summary())
+        return autoencoder
 
     def load_model(self, model_dir_path):
         config_file_path = LstmAutoEncoder2.get_config_file(model_dir_path)
